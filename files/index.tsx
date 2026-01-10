@@ -1,13 +1,11 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { TamaguiProvider } from 'tamagui'
-import { tamaguiConfig } from './files/theme/tamagui.config'
-import { AppNavigator } from './files/app/AppNavigator'
-import 'react-native-reanimated'
-import 'react-native-gesture-handler'
+import { tamaguiConfig } from './theme/tamagui.config'
+import { AppNavigator } from './app/AppNavigator'
 
 export default function App() {
   return (
-   <TamaguiProvider config={tamaguiConfig} defaultTheme="light">
+    <TamaguiProvider config={tamaguiConfig}>
       <NavigationContainer>
         <AppNavigator />
       </NavigationContainer>
