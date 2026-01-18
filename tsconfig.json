@@ -3,6 +3,6 @@
   "compilerOptions": {
     "types": ["jest", "react", "react native"],
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "files/components/DrawerItemList.js"],
   "exclude": ["**/node_modules", "**/Pods"]
 }

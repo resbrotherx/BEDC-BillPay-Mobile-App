@@ -1,5 +1,10 @@
-import { Pressable, View, StyleSheet } from 'react-native'
-import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated'
+import { Pressable, Text, StyleSheet } from 'react-native'
+import Animated, {
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated'
+
 import {
   HomeIcon,
   PayIcon,
@@ -8,7 +13,7 @@ import {
   ProfileIcon,
 } from '../../assets/icons'
 
-const icons = {
+const ICONS = {
   Home: HomeIcon,
   Pay: PayIcon,
   Usage: UsageIcon,
@@ -16,41 +21,77 @@ const icons = {
   Profile: ProfileIcon,
 }
 
-export function TabButton({ focused, routeName, onPress }) {
-  const Icon = icons[routeName]
+const COLORS = {
+  Home: '#4FA3AE',
+  Pay: '#2E86DE',
+  Usage: '#27AE60',
+  AI: '#9B59B6',
+  Profile: '#E67E22',
+}
+
+export function TabButton({ label, focused, onPress }) {
+  const Icon = ICONS[label]
+  const color = COLORS[label]
+
+  const containerStyle = useAnimatedStyle(() => ({
+    flex: withSpring(focused ? 1.4 : 0.7),
+  }))
 
   const bgStyle = useAnimatedStyle(() => ({
     opacity: withTiming(focused ? 1 : 0),
-    transform: [{ scale: withTiming(focused ? 1 : 0.6) }],
+    transform: [{ scale: withSpring(focused ? 1 : 0.6) }],
+  }))
+
+  const textStyle = useAnimatedStyle(() => ({
+    opacity: withTiming(focused ? 1 : 0),
+    width: focused ? 'auto' : 0,
   }))
 
   return (
-    <Pressable onPress={onPress} style={styles.wrapper}>
-      {/* SELECTED BACKGROUND */}
-      <Animated.View style={[styles.activeBg, bgStyle]} />
+    <Pressable onPress={onPress} style={{ flex: 1 }}>
+      <Animated.View style={[styles.tab, containerStyle]}>
+        {/* ACTIVE PILL */}
+        <Animated.View
+          style={[
+            styles.activeBg,
+            { backgroundColor: color },
+            bgStyle,
+          ]}
+        />
 
-      {/* ICON */}
-      <View style={styles.icon}>
-        <Icon color={focused ? '#fff' : '#111'} />
-      </View>
+        {/* ICON */}
+        <Icon color={focused ? '#fff' : '#9CA3AF'} />
+
+
+        {/* LABEL */}
+        <Animated.Text style={[styles.label, textStyle]}>
+          {label}
+        </Animated.Text>
+      </Animated.View>
     </Pressable>
   )
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
+  tab: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    height: 18,
+    borderRadius: 14,
+    gap: 1,
+    overflow: 'hidden',
   },
   activeBg: {
-    position: 'absolute',
-    width: 52,
-    height: 52,
-    borderRadius: 16,
-    backgroundColor: '#4FA3AE', // teal
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 10,
+    paddingHorizontal:10,
+    height:'80%',
+    marginTop:5,
+
   },
-  icon: {
-    zIndex: 2,
+  label: {
+    color: '#fff',
+    fontWeight: '300',
   },
 })
